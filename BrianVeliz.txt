@@ -1,0 +1,140 @@
+--------------- [Laboration 3 - Brian Gabriel Bartha Veliz] ---------------------
+1. use myDB
+switched to db myDB
+
+2.db.authors.insertOne({FirstName:"Selma", LastName:"Lagerlöf"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6390924def8dab8cbab66941")
+}
+
+3.db.authors.insertOne({FirstName:"August",LastName:"Bondenson",Birth:1854})
+{
+  acknowledged: true,
+  insertedId: ObjectId("639092ccef8dab8cbab66942")
+}
+
+4.db.authors.updateOne({_id:ObjectId("639092ccef8dab8cbab66942")}, {$set:{Death:1906}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+5.load("addAuthors.js")
+true
+
+6.db.authors.countDocuments()
+6
+
+7.db.authors.find({FirstName:"August"}).count()
+2
+
+8.db.authors.updateOne({_id: ObjectId("6390924def8dab8cbab66941")}, { $set:{ Birth:1858, Death:1940} })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+9.db.authors.updateOne({_id: ObjectId("6390924def8dab8cbab66941")}, { $set:{ Books:["Gösta Berlings saga", "En herrgårdssägen", "Nils Holgerssons underbara resa genom Sverige"] } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+10.db.authors.updateOne({_id: ObjectId("6390a19cef8dab8cbab66943")}, { $push:{ Books:"Vi på Saltkråkan" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+11.db.authors.updateOne({_id: ObjectId("6390a19cef8dab8cbab66943")}, { $pull:{ Books:"Bröderna Lejonhjärta" } })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+12.db.authors.find({Death: { $gte:2000} })
+[
+  {
+    _id: ObjectId("6390a19cef8dab8cbab66943"),
+    FirstName: 'Astrid',
+    LastName: 'Lindgren',
+    Birth: 1907,
+    Death: 2002,
+    Books: [
+      'Här kommer Pippi Långstrump',
+      'Mio min Mio',
+      'Vi på Saltkråkan'
+    ]
+  }
+]
+
+13.db.authors.find({Death: { $gte:1940, $lt:1950} }).count()
+3
+
+14.db.authors.find({Death: { $gte:1940, $lt:1950} }, {FirstName:1, LastName:1, Death:1})
+[
+  {
+    _id: ObjectId("6390924def8dab8cbab66941"),
+    FirstName: 'Selma',
+    LastName: 'Lagerlöf',
+    Death: 1940
+  },
+  {
+    _id: ObjectId("6390a19cef8dab8cbab66944"),
+    FirstName: 'Hjalmar',
+    LastName: 'Söderberg',
+    Death: 1941
+  },
+  {
+    _id: ObjectId("6390a19cef8dab8cbab66945"),
+    FirstName: 'Karin',
+    LastName: 'Boye',
+    Death: 1941
+  }
+]
+
+15.db.authors.updateMany({FirstName: {$eq: "Hjalmar" } }, {$set:{Gender:"Male"} })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+16.db.authors.updateMany({FirstName: {$in: ["Astrid", "Karin", "Selma"] } }, {$set:{Gender:"Female"} })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 3,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+
+17.db.authors.updateMany({FirstName: "August", LastName:"Strindberg"}, {$unset: {Books:1} })
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+18.db.authors.deleteMany({FirstName:"August"})
+{ acknowledged: true, deletedCount: 2 }
